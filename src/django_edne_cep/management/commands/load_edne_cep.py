@@ -61,14 +61,14 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            "--dne-source",
+            "--edne-source",
             type=str,
             default=None,
             help="Path or URL to eDNE zip file (default: auto-download)",
         )
 
     def handle(self, *_args, **options):
-        dne_source = options["dne_source"] or get_setting("DNE_SOURCE")
+        edne_source = options["edne_source"] or get_setting("EDNE_SOURCE")
         table_names = get_setting("TABLE_NAMES") or None
         database_url = _get_database_url()
         table_set = _get_table_set()
@@ -77,7 +77,7 @@ class Command(BaseCommand):
 
         loader = DneLoader(
             database_url=database_url,
-            dne_source=dne_source,
+            dne_source=edne_source,
             table_names=table_names,
         )
         loader.load(table_set)

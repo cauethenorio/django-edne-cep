@@ -8,14 +8,14 @@ from edne_correios_loader import TableSetEnum
 
 @override_settings(INSTALLED_APPS=["django_edne_cep"])
 @pytest.mark.django_db
-def test_load_dne_default(mocker):
+def test_load_edne_cep_default(mocker):
     mock_loader_cls = mocker.patch(
-        "django_edne_cep.management.commands.load_dne.DneLoader"
+        "django_edne_cep.management.commands.load_edne_cep.DneLoader"
     )
     mock_loader = MagicMock()
     mock_loader_cls.return_value = mock_loader
 
-    call_command("load_dne")
+    call_command("load_edne_cep")
 
     mock_loader_cls.assert_called_once()
     call_kwargs = mock_loader_cls.call_args
@@ -24,43 +24,43 @@ def test_load_dne_default(mocker):
 
 
 @pytest.mark.django_db
-def test_load_dne_with_source(mocker):
+def test_load_edne_cep_with_source(mocker):
     mock_loader_cls = mocker.patch(
-        "django_edne_cep.management.commands.load_dne.DneLoader"
+        "django_edne_cep.management.commands.load_edne_cep.DneLoader"
     )
     mock_loader = MagicMock()
     mock_loader_cls.return_value = mock_loader
 
-    dne_path = "/tmp/edne.zip"  # noqa: S108
-    call_command("load_dne", dne_source=dne_path)
+    edne_path = "/tmp/edne.zip"  # noqa: S108
+    call_command("load_edne_cep", edne_source=edne_path)
 
     call_kwargs = mock_loader_cls.call_args
-    assert call_kwargs.kwargs["dne_source"] == dne_path
+    assert call_kwargs.kwargs["dne_source"] == edne_path
 
 
 @override_settings(INSTALLED_APPS=["django_edne_cep", "django_edne_cep.cep_tables"])
 @pytest.mark.django_db
-def test_load_dne_infers_cep_tables_when_installed(mocker):
+def test_load_edne_cep_infers_cep_tables_when_installed(mocker):
     mock_loader_cls = mocker.patch(
-        "django_edne_cep.management.commands.load_dne.DneLoader"
+        "django_edne_cep.management.commands.load_edne_cep.DneLoader"
     )
     mock_loader = MagicMock()
     mock_loader_cls.return_value = mock_loader
 
-    call_command("load_dne")
+    call_command("load_edne_cep")
 
     mock_loader.load.assert_called_once_with(TableSetEnum.CEP_TABLES)
 
 
 @override_settings(EDNE_CEP={"TABLE_SET": "all"})
 @pytest.mark.django_db
-def test_load_dne_explicit_table_set(mocker):
+def test_load_edne_cep_explicit_table_set(mocker):
     mock_loader_cls = mocker.patch(
-        "django_edne_cep.management.commands.load_dne.DneLoader"
+        "django_edne_cep.management.commands.load_edne_cep.DneLoader"
     )
     mock_loader = MagicMock()
     mock_loader_cls.return_value = mock_loader
 
-    call_command("load_dne")
+    call_command("load_edne_cep")
 
     mock_loader.load.assert_called_once_with(TableSetEnum.ALL_TABLES)

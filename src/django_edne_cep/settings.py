@@ -3,7 +3,7 @@ from django.conf import settings
 DEFAULTS = {
     "TABLE_NAMES": {},
     "TABLE_SET": None,
-    "DNE_SOURCE": None,
+    "EDNE_SOURCE": None,
     "DATABASE_ALIAS": "default",
     "DATABASE_URL": None,
     "CACHE_TIMEOUT": 3600,

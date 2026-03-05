@@ -19,7 +19,7 @@ def check_tables_exist(app_configs, **kwargs):  # noqa: ARG001
         warnings.append(
             CheckWarning(
                 f"Table '{table_name}' does not exist. "
-                "Run 'manage.py load_dne' to populate CEP data.",
+                "Run 'manage.py load_edne_cep' to populate CEP data.",
                 id="django_edne_cep.W001",
             )
         )
