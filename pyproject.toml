@@ -1,0 +1,136 @@
+[build-system]
+requires = ["uv_build>=0.10.7,<0.11.0"]
+build-backend = "uv_build"
+
+[project]
+name = "django-edne-cep"
+version = "0.1.0"
+description = "Django app wrapping edne-correios-loader for CEP lookup via ORM"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+keywords = ["django", "Correios", "CEP", "endereço", "address", "DNE", "eDNE", "Brasil"]
+authors = [
+    { name = "Cauê Thenório", email = "caue@thenorio.com.br" },
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = [
+    "django>=5.2",
+    "edne-correios-loader>=1.2.0",
+]
+
+[project.urls]
+Documentation = "https://github.com/cauethenorio/django-edne-cep#readme"
+Issues = "https://github.com/cauethenorio/django-edne-cep/issues"
+Source = "https://github.com/cauethenorio/django-edne-cep"
+
+[dependency-groups]
+dev = [
+    "coverage[toml]>=6.5",
+    "pytest",
+    "pytest-django",
+    "pytest-mock",
+    "ruff",
+    "ty",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    # PyDevTools recommended defaults
+    # https://pydevtools.com/handbook/how-to/how-to-configure-recommended-ruff-defaults/
+    "E",        # pycodestyle errors
+    "W",        # pycodestyle warnings
+    "F",        # pyflakes
+    "I",        # isort
+    "UP",       # pyupgrade
+    "C4",       # flake8-comprehensions
+    "FA",       # flake8-future-annotations
+    "ISC",      # flake8-implicit-str-concat
+    "ICN",      # flake8-import-conventions
+    "RET",      # flake8-return
+    "SIM",      # flake8-simplify
+    "TID",      # flake8-tidy-imports
+    "TC",       # flake8-type-checking
+    "PTH",      # flake8-use-pathlib
+
+    # Additional from edne-correios-loader
+    "A",        # flake8-builtins
+    "ARG",      # flake8-unused-arguments
+    "B",        # flake8-bugbear
+    "DTZ",      # flake8-datetimez
+    "EM",       # flake8-errmsg
+    "G",        # flake8-logging-format
+    "N",        # pep8-naming
+    "PIE",      # flake8-pie
+    "PLC",      # pylint convention
+    "PLE",      # pylint error
+    "PLR",      # pylint refactor
+    "PLW",      # pylint warning
+    "Q",        # flake8-quotes
+    "RUF",      # ruff-specific
+    "S",        # flake8-bandit (security)
+    "T10",      # flake8-debugger
+    "T20",      # flake8-print
+    "TRY",      # tryceratops
+    "YTT",      # flake8-2020
+
+    # Django-specific
+    "DJ",       # flake8-django
+]
+ignore = [
+    "B027",                                         # empty methods in ABCs
+    "E401",                                         # multi-line imports
+    "S105", "S106", "S107",                         # possible passwords
+    "SIM117",                                       # nested context managers
+    "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0915",  # complexity
+    "ISC001",                                       # conflicts with ruff format
+]
+unfixable = ["F401", "F841", "ARG001"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["django_edne_cep"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["PLR2004", "S101", "E741", "SIM115"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+
+[tool.coverage.run]
+source_pkgs = ["django_edne_cep", "tests"]
+branch = true
+parallel = true
+omit = [
+    "src/django_edne_cep/__about__.py",
+    "tests/conftest.py",
+]
+
+[tool.coverage.paths]
+django_edne_cep = [
+    "src/django_edne_cep",
+    "*/django-edne-cep/src/django_edne_cep",
+]
+tests = ["tests", "*/django-edne-cep/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
