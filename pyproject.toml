@@ -111,6 +111,7 @@ known-first-party = ["django_edne_cep"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
+pythonpath = ["."]
 
 [tool.coverage.run]
 source_pkgs = ["django_edne_cep", "tests"]
