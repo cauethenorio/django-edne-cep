@@ -6,6 +6,7 @@ from django_edne_cep.services import lookup_cep
 
 
 @pytest.mark.django_db
+@pytest.mark.usefixtures("_create_unmanaged_tables")
 def test_lookup_cep_not_found():
     result = lookup_cep("99999999")
     assert result is None

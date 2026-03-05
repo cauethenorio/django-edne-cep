@@ -2,7 +2,7 @@ import pytest
 from django.db import connection
 
 
-@pytest.fixture(autouse=True, scope="session")
+@pytest.fixture(scope="session")
 def _create_unmanaged_tables(django_db_setup, django_db_blocker):  # noqa: ARG001
     """Create tables for unmanaged models so tests can query them."""
     with django_db_blocker.unblock():
