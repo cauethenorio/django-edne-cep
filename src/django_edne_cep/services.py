@@ -1,10 +1,9 @@
-from django.core.cache import cache
-
-from .models import Cep
-from .settings import get_setting
-
-
 def lookup_cep(cep_str):
+    from django.core.cache import cache  # noqa: PLC0415
+
+    from .models import Cep  # noqa: PLC0415
+    from .settings import get_setting  # noqa: PLC0415
+
     cleaned = cep_str.replace("-", "").strip()
 
     timeout = get_setting("CACHE_TIMEOUT")

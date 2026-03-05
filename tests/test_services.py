@@ -38,7 +38,7 @@ def test_lookup_cep_uses_cache(mocker):
         "filter",
         return_value=mocker.MagicMock(first=lambda: sentinel),
     )
-    cache_set = mocker.patch("django_edne_cep.services.cache.set")
+    cache_set = mocker.patch("django.core.cache.cache.set")
 
     result = lookup_cep("01001000")
 
@@ -54,7 +54,7 @@ def test_lookup_cep_skips_cache_when_timeout_zero(mocker):
         "filter",
         return_value=mocker.MagicMock(first=lambda: None),
     )
-    cache_get = mocker.patch("django_edne_cep.services.cache.get")
+    cache_get = mocker.patch("django.core.cache.cache.get")
 
     lookup_cep("01001000")
 
