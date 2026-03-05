@@ -1,22 +1,31 @@
+from django.core.cache import caches
+
+from .models import Cep
+from .settings import get_setting
+
+# sentinel to distinguish a cache miss from a cached None result
+_CACHE_MISS = object()
+
+_CACHE_KEY_FORMAT = "edne:cep:{}"
+
+
 def lookup_cep(cep_str):
-    from django.core.cache import cache  # noqa: PLC0415
-
-    from .models import Cep  # noqa: PLC0415
-    from .settings import get_setting  # noqa: PLC0415
-
-    cleaned = cep_str.replace("-", "").strip()
+    cleaned_cep = cep_str.replace("-", "").strip()
 
     timeout = get_setting("CACHE_TIMEOUT")
+    cache = caches[get_setting("CACHE_ALIAS")]
+    cache_key = _CACHE_KEY_FORMAT.format(cleaned_cep)
 
     if timeout > 0:
-        cache_key = f"edne:cep:{cleaned}"
-        cached = cache.get(cache_key)
-        if cached is not None:
+        # use sentinel as default so we can tell apart "not in cache" from "cached None"
+        cached = cache.get(cache_key, _CACHE_MISS)
+        if cached is not _CACHE_MISS:
             return cached
 
-    result = Cep.objects.filter(cep=cleaned).first()
+    result = Cep.objects.filter(cep=cleaned_cep).first()
 
-    if timeout > 0 and result is not None:
+    if timeout > 0:
+        # cache both found and not-found results to avoid repeated DB hits
         cache.set(cache_key, result, timeout)
 
     return result
