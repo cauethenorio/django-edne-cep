@@ -6,6 +6,7 @@ from django.test import override_settings
 from edne_correios_loader import TableSetEnum
 
 
+@override_settings(INSTALLED_APPS=["django_edne_cep"])
 @pytest.mark.django_db
 def test_load_dne_default(mocker):
     mock_loader_cls = mocker.patch(

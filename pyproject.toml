@@ -109,6 +109,7 @@ known-first-party = ["django_edne_cep"]
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*" = ["PLR2004", "S101", "E741", "SIM115"]
 "src/django_edne_cep/models.py" = ["DJ001"]
+"src/django_edne_cep/cep_tables/models.py" = ["DJ001", "DJ008", "RUF012"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"

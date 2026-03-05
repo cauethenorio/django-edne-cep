@@ -7,6 +7,7 @@ DATABASES = {
 
 INSTALLED_APPS = [
     "django_edne_cep",
+    "django_edne_cep.cep_tables",
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
