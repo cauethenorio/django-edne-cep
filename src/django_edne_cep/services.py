@@ -9,7 +9,7 @@ _CACHE_MISS = object()
 _CACHE_KEY_FORMAT = "edne:cep:{}"
 
 
-def lookup_cep(cep_str):
+def lookup_cep(cep_str: str) -> Cep | None:
     cleaned_cep = cep_str.replace("-", "").strip()
 
     timeout = get_setting("CACHE_TIMEOUT")

@@ -43,6 +43,7 @@ Source = "https://github.com/cauethenorio/django-edne-cep"
 [dependency-groups]
 dev = [
     "coverage[toml]>=6.5",
+    "django-stubs>=5.2.9",
     "pytest",
     "pytest-django",
     "pytest-mock",

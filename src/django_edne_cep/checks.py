@@ -1,4 +1,7 @@
+from collections.abc import Sequence
+
 from django.apps import apps
+from django.apps.config import AppConfig
 from django.core.checks import Warning as CheckWarning
 from django.core.checks import register
 from django.db import connections
@@ -9,7 +12,12 @@ from .table_names import get_table_name
 
 
 @register()
-def check_tables_exist(app_configs, **kwargs):  # noqa: ARG001
+def check_tables_exist(
+    *,
+    app_configs: Sequence[AppConfig] | None,
+    databases: Sequence[str] | None,
+    **kwargs: object,
+) -> list[CheckWarning]:
     alias = get_setting("DATABASE_ALIAS")
     connection = connections[alias]
     existing_tables = connection.introspection.table_names()
@@ -41,7 +49,7 @@ def check_tables_exist(app_configs, **kwargs):  # noqa: ARG001
     ]
 
 
-def _get_expected_table_set():
+def _get_expected_table_set() -> TableSetEnum | None:
     """Determine which table set is expected based on settings and installed apps"""
     explicit = get_setting("TABLE_SET")
     if explicit is not None:

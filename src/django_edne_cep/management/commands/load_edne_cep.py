@@ -57,7 +57,7 @@ class Command(BaseCommand):
         logger.setLevel(level)
 
 
-def _get_database_url():
+def _get_database_url() -> str:
     """Build a database URL from Django's DATABASES setting"""
     url = get_setting("DATABASE_URL")
     if url:
@@ -100,7 +100,7 @@ def _get_database_url():
     return f"{dialect}://{auth}{host}{port_str}/{name}"
 
 
-def _get_table_set():
+def _get_table_set() -> TableSetEnum:
     """Determine which table set to load based on settings and installed apps"""
     explicit = get_setting("TABLE_SET")
     if explicit is not None:

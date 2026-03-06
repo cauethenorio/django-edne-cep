@@ -1,6 +1,8 @@
+from typing import Any
+
 from django.conf import settings
 
-DEFAULTS = {
+DEFAULTS: dict[str, Any] = {
     "TABLE_NAMES": {"cep_unificado": "edne_cep"},
     "TABLE_SET": None,
     "EDNE_SOURCE": None,
@@ -11,7 +13,7 @@ DEFAULTS = {
 }
 
 
-def get_setting(key):
+def get_setting(key: str) -> Any:
     if key not in DEFAULTS:
         msg = f"Unknown django-edne-cep setting: {key}"
         raise KeyError(msg)
