@@ -1,9 +1,23 @@
 .DEFAULT_GOAL := list
-.PHONY: test test-cov lint fmt cov-report cov-xml cov list
+.PHONY: test test-matrix test-cov lint fmt cov-report cov-xml cov list
 
 #: run tests
 test:
 	uv run pytest tests
+
+#: run tests across Python x Django matrix
+test-matrix:
+	uv run --python 3.10 --with 'django~=4.2.0' pytest tests
+	uv run --python 3.10 --with 'django~=5.2.0' pytest tests
+	uv run --python 3.11 --with 'django~=4.2.0' pytest tests
+	uv run --python 3.11 --with 'django~=5.2.0' pytest tests
+	uv run --python 3.12 --with 'django~=4.2.0' pytest tests
+	uv run --python 3.12 --with 'django~=5.2.0' pytest tests
+	uv run --python 3.12 --with 'django~=6.0.0' pytest tests
+	uv run --python 3.13 --with 'django~=5.2.0' pytest tests
+	uv run --python 3.13 --with 'django~=6.0.0' pytest tests
+	uv run --python 3.14 --with 'django~=5.2.0' pytest tests
+	uv run --python 3.14 --with 'django~=6.0.0' pytest tests
 
 #: run tests with coverage
 test-cov:
