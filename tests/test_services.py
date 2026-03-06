@@ -85,6 +85,20 @@ def test_lookup_cep_returns_cached_none_without_db_hit(mocker):
     mock_filter.assert_not_called()
 
 
+@pytest.mark.django_db
+def test_lookup_cep_cache_hit_skips_db(mocker):
+    sentinel = Cep(cep="01001000", municipio="São Paulo", uf="SP")
+    caches["default"].set("edne:cep:01001000", sentinel, 3600)
+
+    mock_filter = mocker.patch.object(Cep.objects, "filter")
+
+    result = lookup_cep("01001000")
+
+    assert result.cep == "01001000"
+    assert result.municipio == "São Paulo"
+    mock_filter.assert_not_called()
+
+
 @override_settings(EDNE_CEP={"CACHE_TIMEOUT": 0})
 @pytest.mark.django_db
 def test_lookup_cep_skips_cache_when_timeout_zero(mocker):
@@ -125,6 +139,25 @@ def test_lookup_cep_uses_configured_cache_alias(mocker):
     lookup_cep("01001000")
 
     cache_set.assert_called_once()
+
+
+@pytest.mark.django_db
+@pytest.mark.usefixtures("_create_unmanaged_tables")
+def test_lookup_cep_returns_instance_from_db():
+    Cep.objects.create(
+        cep="01001000",
+        logradouro="Praça da Sé",
+        bairro="Sé",
+        municipio="São Paulo",
+        municipio_cod_ibge=3550308,
+        uf="SP",
+    )
+
+    result = lookup_cep("01001-000")
+
+    assert isinstance(result, Cep)
+    assert result.cep == "01001000"
+    assert result.municipio == "São Paulo"
 
 
 def test_lookup_cep_importable_via_package():
