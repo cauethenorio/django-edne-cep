@@ -72,3 +72,66 @@ def test_get_database_url_supports_extra_backends(mock_loader, engine, expected_
 
     url = mock_loader.call_args.kwargs["database_url"]
     assert url.startswith(f"{expected_scheme}://")
+
+
+@override_settings(EDNE_CEP={"DATABASE_URL": "postgresql://custom:5432/mydb"})
+@pytest.mark.django_db
+def test_get_database_url_uses_explicit_setting(mock_loader):
+    call_command("load_edne_cep")
+
+    assert (
+        mock_loader.call_args.kwargs["database_url"] == "postgresql://custom:5432/mydb"
+    )
+
+
+@pytest.mark.django_db
+def test_get_database_url_sqlite(mock_loader):
+    db_config = {"ENGINE": "django.db.backends.sqlite3", "NAME": "/tmp/test.db"}  # noqa: S108
+    with override_settings(DATABASES={"default": db_config}):
+        call_command("load_edne_cep")
+
+    assert mock_loader.call_args.kwargs["database_url"] == "sqlite:////tmp/test.db"
+
+
+@pytest.mark.django_db
+def test_get_database_url_postgresql_full(mock_loader):
+    db_config = {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "mydb",
+        "USER": "admin",
+        "PASSWORD": "secret",
+        "HOST": "db.example.com",
+        "PORT": "5433",
+    }
+    with override_settings(DATABASES={"default": db_config}):
+        call_command("load_edne_cep")
+
+    assert mock_loader.call_args.kwargs["database_url"] == (
+        "postgresql://admin:secret@db.example.com:5433/mydb"
+    )
+
+
+@pytest.mark.django_db
+def test_get_database_url_postgresql_no_port(mock_loader):
+    db_config = {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "mydb",
+        "USER": "admin",
+        "PASSWORD": "secret",
+        "HOST": "localhost",
+        "PORT": "",
+    }
+    with override_settings(DATABASES={"default": db_config}):
+        call_command("load_edne_cep")
+
+    assert mock_loader.call_args.kwargs["database_url"] == (
+        "postgresql://admin:secret@localhost/mydb"
+    )
+
+
+@pytest.mark.django_db
+def test_get_database_url_unsupported_engine_raises(mock_loader):
+    db_config = {"ENGINE": "some.custom.backend", "NAME": "mydb"}
+    with override_settings(DATABASES={"default": db_config}):
+        with pytest.raises(ValueError, match="Unsupported database engine"):
+            call_command("load_edne_cep")
