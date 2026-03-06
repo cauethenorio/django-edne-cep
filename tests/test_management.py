@@ -57,6 +57,8 @@ def test_load_edne_cep_explicit_table_set(mock_loader):
         ("django.contrib.gis.db.backends.mysql", "mysql"),
     ],
 )
+# safe to override DATABASES: loader is mocked, no real DB connection is used
+@pytest.mark.filterwarnings("ignore::UserWarning")
 @pytest.mark.django_db
 def test_get_database_url_supports_extra_backends(mock_loader, engine, expected_scheme):
     db_config = {
@@ -84,6 +86,8 @@ def test_get_database_url_uses_explicit_setting(mock_loader):
     )
 
 
+# safe to override DATABASES: loader is mocked, no real DB connection is used
+@pytest.mark.filterwarnings("ignore::UserWarning")
 @pytest.mark.django_db
 def test_get_database_url_sqlite(mock_loader):
     db_config = {"ENGINE": "django.db.backends.sqlite3", "NAME": "/tmp/test.db"}  # noqa: S108
@@ -93,6 +97,8 @@ def test_get_database_url_sqlite(mock_loader):
     assert mock_loader.call_args.kwargs["database_url"] == "sqlite:////tmp/test.db"
 
 
+# safe to override DATABASES: loader is mocked, no real DB connection is used
+@pytest.mark.filterwarnings("ignore::UserWarning")
 @pytest.mark.django_db
 def test_get_database_url_postgresql_full(mock_loader):
     db_config = {
@@ -111,6 +117,8 @@ def test_get_database_url_postgresql_full(mock_loader):
     )
 
 
+# safe to override DATABASES: loader is mocked, no real DB connection is used
+@pytest.mark.filterwarnings("ignore::UserWarning")
 @pytest.mark.django_db
 def test_get_database_url_postgresql_no_port(mock_loader):
     db_config = {
@@ -129,8 +137,11 @@ def test_get_database_url_postgresql_no_port(mock_loader):
     )
 
 
+# safe to override DATABASES: loader is mocked, no real DB connection is used
+@pytest.mark.filterwarnings("ignore::UserWarning")
 @pytest.mark.django_db
-def test_get_database_url_unsupported_engine_raises(mock_loader):
+@pytest.mark.usefixtures("mock_loader")
+def test_get_database_url_unsupported_engine_raises():
     db_config = {"ENGINE": "some.custom.backend", "NAME": "mydb"}
     with override_settings(DATABASES={"default": db_config}):
         with pytest.raises(ValueError, match="Unsupported database engine"):

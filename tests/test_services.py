@@ -15,7 +15,7 @@ def _clear_cache():
 
 
 @pytest.mark.django_db
-@pytest.mark.usefixtures("_create_unmanaged_tables")
+@pytest.mark.usefixtures("_cep_table")
 def test_lookup_cep_not_found():
     result = lookup_cep("99999999")
     assert result is None
@@ -142,7 +142,7 @@ def test_lookup_cep_uses_configured_cache_alias(mocker):
 
 
 @pytest.mark.django_db
-@pytest.mark.usefixtures("_create_unmanaged_tables")
+@pytest.mark.usefixtures("_cep_table")
 def test_lookup_cep_returns_instance_from_db():
     Cep.objects.create(
         cep="01001000",
