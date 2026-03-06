@@ -71,6 +71,9 @@ def _get_database_url():
         "django.db.backends.sqlite3": "sqlite",
         "django.db.backends.postgresql": "postgresql",
         "django.db.backends.mysql": "mysql",
+        "django.contrib.gis.db.backends.spatialite": "sqlite",
+        "django.contrib.gis.db.backends.postgis": "postgresql",
+        "django.contrib.gis.db.backends.mysql": "mysql",
     }
 
     dialect = engine_map.get(engine)

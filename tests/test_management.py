@@ -45,3 +45,30 @@ def test_load_edne_cep_explicit_table_set(mock_loader):
     call_command("load_edne_cep")
 
     mock_loader.return_value.load.assert_called_once_with(TableSetEnum.ALL_TABLES)
+
+
+@pytest.mark.parametrize(
+    ("engine", "expected_scheme"),
+    [
+        ("django.db.backends.postgresql", "postgresql"),
+        ("django.db.backends.mysql", "mysql"),
+        ("django.contrib.gis.db.backends.postgis", "postgresql"),
+        ("django.contrib.gis.db.backends.spatialite", "sqlite"),
+        ("django.contrib.gis.db.backends.mysql", "mysql"),
+    ],
+)
+@pytest.mark.django_db
+def test_get_database_url_supports_extra_backends(mock_loader, engine, expected_scheme):
+    db_config = {
+        "ENGINE": engine,
+        "NAME": "testdb",
+        "USER": "u",
+        "PASSWORD": "p",
+        "HOST": "localhost",
+        "PORT": "5432",
+    }
+    with override_settings(DATABASES={"default": db_config}):
+        call_command("load_edne_cep")
+
+    url = mock_loader.call_args.kwargs["database_url"]
+    assert url.startswith(f"{expected_scheme}://")
