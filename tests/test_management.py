@@ -10,7 +10,7 @@ from edne_correios_loader import TableSetEnum
 @pytest.mark.django_db
 def test_load_edne_cep_default(mocker):
     mock_loader_cls = mocker.patch(
-        "django_edne_cep.management.commands.load_edne_cep.DneLoader"
+        "django_edne_cep.management.commands.load_edne_cep.DneLoaderWithProgress"
     )
     mock_loader = MagicMock()
     mock_loader_cls.return_value = mock_loader
@@ -26,7 +26,7 @@ def test_load_edne_cep_default(mocker):
 @pytest.mark.django_db
 def test_load_edne_cep_with_source(mocker):
     mock_loader_cls = mocker.patch(
-        "django_edne_cep.management.commands.load_edne_cep.DneLoader"
+        "django_edne_cep.management.commands.load_edne_cep.DneLoaderWithProgress"
     )
     mock_loader = MagicMock()
     mock_loader_cls.return_value = mock_loader
@@ -42,7 +42,7 @@ def test_load_edne_cep_with_source(mocker):
 @pytest.mark.django_db
 def test_load_edne_cep_infers_cep_tables_when_installed(mocker):
     mock_loader_cls = mocker.patch(
-        "django_edne_cep.management.commands.load_edne_cep.DneLoader"
+        "django_edne_cep.management.commands.load_edne_cep.DneLoaderWithProgress"
     )
     mock_loader = MagicMock()
     mock_loader_cls.return_value = mock_loader
@@ -56,7 +56,7 @@ def test_load_edne_cep_infers_cep_tables_when_installed(mocker):
 @pytest.mark.django_db
 def test_load_edne_cep_explicit_table_set(mocker):
     mock_loader_cls = mocker.patch(
-        "django_edne_cep.management.commands.load_edne_cep.DneLoader"
+        "django_edne_cep.management.commands.load_edne_cep.DneLoaderWithProgress"
     )
     mock_loader = MagicMock()
     mock_loader_cls.return_value = mock_loader
