@@ -27,4 +27,4 @@ def test_cep_model_fields():
 
 def test_cep_str():
     cep = Cep(cep="01001000", municipio="São Paulo", uf="SP")
-    assert str(cep) == "01001000"
+    assert str(cep) == "01001-000"

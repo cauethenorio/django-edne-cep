@@ -20,6 +20,9 @@ class Localidade(models.Model):
         managed = False
         db_table = get_table_name("log_localidade")
 
+    def __str__(self) -> str:
+        return f"{self.loc_no}/{self.ufe_sg}"
+
 
 class Bairro(models.Model):
     bai_nu = models.AutoField(primary_key=True)
@@ -31,6 +34,9 @@ class Bairro(models.Model):
     class Meta:
         managed = False
         db_table = get_table_name("log_bairro")
+
+    def __str__(self) -> str:
+        return f"{self.bai_no} ({self.ufe_sg})"
 
 
 class CaixaPostalComunitaria(models.Model):
@@ -44,6 +50,9 @@ class CaixaPostalComunitaria(models.Model):
     class Meta:
         managed = False
         db_table = get_table_name("log_cpc")
+
+    def __str__(self) -> str:
+        return f"{self.cpc_no} - {self.cep}"
 
 
 class Logradouro(models.Model):
@@ -70,6 +79,9 @@ class Logradouro(models.Model):
         managed = False
         db_table = get_table_name("log_logradouro")
 
+    def __str__(self) -> str:
+        return f"{self.log_no} - {self.cep}"
+
 
 class GrandeUsuario(models.Model):
     gru_nu = models.AutoField(primary_key=True)
@@ -87,6 +99,9 @@ class GrandeUsuario(models.Model):
     class Meta:
         managed = False
         db_table = get_table_name("log_grande_usuario")
+
+    def __str__(self) -> str:
+        return f"{self.gru_no} - {self.cep}"
 
 
 class UnidadeOperacional(models.Model):
@@ -106,3 +121,6 @@ class UnidadeOperacional(models.Model):
     class Meta:
         managed = False
         db_table = get_table_name("log_unid_oper")
+
+    def __str__(self) -> str:
+        return f"{self.uop_no} - {self.cep}"

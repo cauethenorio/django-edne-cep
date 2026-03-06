@@ -15,8 +15,7 @@ class Cep(models.Model):
 
     class Meta:
         managed = False
-        # resolved at import time; TABLE_NAMES overrides require app restart
         db_table = get_table_name("cep_unificado")
 
-    def __str__(self):
-        return self.cep
+    def __str__(self) -> str:
+        return f"{self.cep[:5]}-{self.cep[5:]}"
