@@ -3,7 +3,7 @@ from django_edne_cep.models import Cep
 
 def test_cep_model_meta():
     assert Cep._meta.managed is False
-    assert Cep._meta.db_table == "cep_unificado"
+    assert Cep._meta.db_table == "edne_cep"
 
 
 def test_cep_model_pk():

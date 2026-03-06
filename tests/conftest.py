@@ -9,7 +9,7 @@ def _create_unmanaged_tables(django_db_setup, django_db_blocker):  # noqa: ARG00
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                CREATE TABLE IF NOT EXISTS cep_unificado (
+                CREATE TABLE IF NOT EXISTS edne_cep (
                     cep VARCHAR(8) PRIMARY KEY,
                     logradouro VARCHAR(100),
                     complemento VARCHAR(100),

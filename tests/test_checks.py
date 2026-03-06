@@ -9,7 +9,7 @@ def test_check_warns_when_tables_missing():
     warnings = check_tables_exist(app_configs=None)
     assert len(warnings) == 1
     assert warnings[0].id == "django_edne_cep.W001"
-    assert "cep_unificado" in warnings[0].msg
+    assert "edne_cep" in warnings[0].msg
 
 
 @pytest.mark.django_db

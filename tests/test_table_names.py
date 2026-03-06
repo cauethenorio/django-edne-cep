@@ -4,7 +4,7 @@ from django_edne_cep.table_names import get_table_name
 
 
 def test_default_table_name():
-    assert get_table_name("cep_unificado") == "cep_unificado"
+    assert get_table_name("cep_unificado") == "edne_cep"
 
 
 def test_default_table_name_logradouro():

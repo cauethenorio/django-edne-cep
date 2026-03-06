@@ -1,7 +1,7 @@
 from django.conf import settings
 
 DEFAULTS = {
-    "TABLE_NAMES": {},
+    "TABLE_NAMES": {"cep_unificado": "edne_cep"},
     "TABLE_SET": None,
     "EDNE_SOURCE": None,
     "DATABASE_ALIAS": "default",
