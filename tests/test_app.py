@@ -7,4 +7,4 @@ def test_app_is_installed():
 
 def test_app_config():
     config = apps.get_app_config("django_edne_cep")
-    assert config.verbose_name == "Django eDNE CEP"
+    assert config.verbose_name == "eDNE CEP"
