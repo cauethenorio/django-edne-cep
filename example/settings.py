@@ -16,7 +16,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_edne_cep",
-    "django_edne_cep.cep_tables",
+    # "django_edne_cep.cep_tables",
 ]
 
 EDNE_CEP = {
