@@ -18,6 +18,7 @@ DEFAULTS: dict[str, Any] = {
     "DATABASE_URL": None,
     "CACHE_TIMEOUT": 3600,
     "CACHE_ALIAS": "default",
+    "ADMIN_ENABLED": False,
 }
 
 
