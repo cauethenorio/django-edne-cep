@@ -8,7 +8,7 @@ def test_default_table_name():
 
 
 def test_default_table_name_logradouro():
-    assert get_table_name("log_logradouro") == "log_logradouro"
+    assert get_table_name("log_logradouro") == "edne_logradouro"
 
 
 @override_settings(EDNE_CEP={"TABLE_NAMES": {"cep_unificado": "my_cep"}})
@@ -18,7 +18,13 @@ def test_dict_override():
 
 @override_settings(EDNE_CEP={"TABLE_NAMES": {"cep_unificado": "my_cep"}})
 def test_dict_override_unmapped_keeps_default():
+    assert get_table_name("log_logradouro") == "edne_logradouro"
+
+
+@override_settings(EDNE_CEP={"TABLE_NAMES": {"log_logradouro": "log_logradouro"}})
+def test_dict_override_can_restore_original_name():
     assert get_table_name("log_logradouro") == "log_logradouro"
+    assert get_table_name("cep_unificado") == "edne_cep"
 
 
 @override_settings(EDNE_CEP={"TABLE_NAMES": lambda name: f"dne_{name}"})

@@ -16,7 +16,7 @@ def test_check_warns_when_tables_missing():
 def test_check_includes_cep_tables_when_installed():
     """cep_tables is in INSTALLED_APPS (test settings)"""
     warnings = check_tables_exist(app_configs=None, databases=None)
-    assert "log_localidade" in warnings[0].msg
+    assert "edne_localidade" in warnings[0].msg
 
 
 @override_settings(EDNE_CEP={"TABLE_SET": "all"})

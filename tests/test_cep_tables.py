@@ -3,12 +3,12 @@ from django.db import models as django_models
 from django_edne_cep.cep_tables import models as cep_models
 
 MODEL_TABLE_MAP = {
-    "Localidade": "log_localidade",
-    "Bairro": "log_bairro",
-    "CaixaPostalComunitaria": "log_cpc",
-    "Logradouro": "log_logradouro",
-    "GrandeUsuario": "log_grande_usuario",
-    "UnidadeOperacional": "log_unid_oper",
+    "Localidade": "edne_localidade",
+    "Bairro": "edne_bairro",
+    "CaixaPostalComunitaria": "edne_caixa_postal",
+    "Logradouro": "edne_logradouro",
+    "GrandeUsuario": "edne_grande_usuario",
+    "UnidadeOperacional": "edne_unidade_operacional",
 }
 
 
