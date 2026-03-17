@@ -1,7 +1,9 @@
+import contextlib
 import re
 
 from django.contrib import admin
 from django.contrib.admin import AdminSite
+from django.contrib.admin.exceptions import AlreadyRegistered
 from django.db import models
 from django.http import HttpRequest
 from django.urls import reverse
@@ -118,7 +120,8 @@ def register_admin(site: AdminSite | None = None) -> None:
         return
 
     site = site or admin.site
-    site.register(Cep, CepAdmin)
+    with contextlib.suppress(AlreadyRegistered):
+        site.register(Cep, CepAdmin)
 
 
 register_admin()
