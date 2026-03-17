@@ -17,6 +17,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_edne_cep",
     # "django_edne_cep.cep_tables",
+    "widget_tweaks",
+    "htmx",
 ]
 
 EDNE_CEP = {
@@ -37,6 +39,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
 ]
@@ -46,12 +49,16 @@ STATIC_URL = "static/"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+            ],
+            "builtins": [
+                "widget_tweaks.templatetags.widget_tweaks",
             ],
         },
     },

@@ -1,0 +1,13 @@
+[project]
+name = "django-edne-cep-example"
+version = "0.0.0"
+description = "Example project for django-edne-cep"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=6.0",
+    "django-edne-cep",
+    "django-widget-tweaks",
+]
+
+[tool.uv.sources]
+django-edne-cep = { path = "..", editable = true }

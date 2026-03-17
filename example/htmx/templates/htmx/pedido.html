@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Exemplo HTMX — django-edne-cep{% endblock %}
+
+{% block content %}
+    <div id="pedido-form"
+         class="bg-white rounded-2xl border-[3px] border-amz-dark p-7 shadow-[6px_6px_0px_0px_#131921]">
+        <h1 class="text-xl font-bold text-amz-dark tracking-tight mb-6">Novo pedido</h1>
+
+        {% partialdef formulario inline %}
+            <form method="post" hx-post="" hx-target="this" hx-swap="outerHTML" novalidate>
+                {% csrf_token %}
+
+                <div class="space-y-4 mb-6">
+                    <div>{% include "htmx/_field.html" with field=form.nome %}</div>
+                    <div>{% include "htmx/_field.html" with field=form.email %}</div>
+                </div>
+
+                <hr class="border-gray-200 mb-6">
+
+                {% partialdef campos-endereco inline %}
+                    <div id="campos-endereco">
+                        <div class="mb-5">
+                            <label for="id_cep" class="block font-semibold text-amz-dark mb-1.5">CEP</label>
+                            <div class="flex">
+                                {% with cep_class="min-w-0 grow shrink text-lg tracking-widest py-3 px-4 border-[3px] border-r-0 border-amz-dark rounded-l-xl bg-white font-semibold focus:outline-none focus:border-amz-orange focus:shadow-[0_0_0_3px_rgba(255,153,0,0.3)] focus:z-10 transition-all placeholder:text-gray-300 placeholder:font-normal" %}
+                                    {% with hx_on_input="let v=this.value.replace(/\D/g,'').slice(0,8); if(v.length>5) v=v.slice(0,5)+'-'+v.slice(5); this.value=v; document.getElementById('endereco-fields').innerHTML=''" %}
+                                        {% with hx_on_keydown="if(event.key==='Enter'){event.preventDefault();this.nextElementSibling.click()}" %}
+                                            {% render_field form.cep class+=cep_class hx-on::input=hx_on_input hx-on::keydown=hx_on_keydown %}
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% endwith %}
+                                <button type="button"
+                                        hx-get="{% url 'htmx:cep-details' %}"
+                                        hx-include="#id_cep"
+                                        hx-target="#campos-endereco"
+                                        hx-swap="outerHTML"
+                                        hx-indicator="#cep-indicator"
+                                        class="shrink-0 px-5 text-lg font-bold text-amz-dark bg-amz-orange border-[3px] border-amz-dark rounded-r-xl cursor-pointer hover:bg-amz-orange-hover transition-colors">
+                                    Buscar
+                                </button>
+                            </div>
+                            {% if form.cep.errors %}
+                                <p class="text-red-600 text-xs font-medium mt-1.5">{{ form.cep.errors.0 }}</p>
+                            {% endif %}
+                            {% for error in cep_errors %}
+                                <p class="text-red-600 text-xs font-medium mt-1.5">{{ error.message }}</p>
+                            {% endfor %}
+
+                            <span id="cep-indicator"
+                                  class="htmx-indicator items-center gap-1 text-xs font-normal text-amz-link mt-1">
+                            {% include "htmx/_icons.html#spinner" %}
+                            buscando
+                        </span>
+                        </div>
+
+                        <div id="endereco-fields">
+                            {% if cep_obj %}
+                                <div class="space-y-4">
+                                    <div class="flex gap-3">
+                                        <div class="grow">
+                                            {% include "htmx/_field.html" with field=form.logradouro readonly=cep_obj.logradouro %}
+                                        </div>
+                                        <div class="w-28 shrink-0">
+                                            {% include "htmx/_field.html" with field=form.numero %}
+                                        </div>
+                                    </div>
+
+                                    <div>{% include "htmx/_field.html" with field=form.complemento %}</div>
+                                    <div>{% include "htmx/_field.html" with field=form.bairro readonly=cep_obj.bairro %}</div>
+
+                                    <div class="flex gap-3">
+                                        <div class="grow">{% include "htmx/_field.html" with field=form.municipio readonly=True %}</div>
+                                        <div class="w-20 shrink-0">{% include "htmx/_field.html" with field=form.uf readonly=True %}</div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endpartialdef %}
+
+                <button type="submit"
+                        class="w-full mt-6 py-3 px-4 text-lg font-bold text-amz-dark bg-amz-orange border-[3px] border-amz-dark rounded-xl shadow-[4px_4px_0px_0px_#131921] cursor-pointer hover:shadow-[2px_2px_0px_0px_#131921] hover:translate-x-[2px] hover:translate-y-[2px] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] transition-all">
+                    Enviar pedido
+                </button>
+
+                {% partialdef resultado %}
+                    {% if pedido %}
+                        <div class="flex items-center gap-2.5 mb-4">
+                            <div class="w-7 h-7 bg-green-500 border-[2px] border-amz-dark rounded-lg flex items-center justify-center">
+                                {% include "htmx/_icons.html#checkmark" %}
+                            </div>
+                            <span class="text-lg font-bold text-amz-dark">Pedido criado com sucesso!</span>
+                        </div>
+                        <div class="text-lg text-amz-dark mb-4">
+                            <p class="font-semibold">{{ pedido.nome }}</p>
+                            <p class="text-[#565959]">{{ pedido.email }}</p>
+                        </div>
+
+                        <div class="p-4 rounded-xl border-[3px] border-amz-dark shadow-[3px_3px_0px_0px_#131921]">
+                            <p class="text-sm font-semibold uppercase tracking-wider mb-4">Endereço de entrega</p>
+                            <p class="leading-relaxed mb-2">
+                                {{ pedido.logradouro }}{% if pedido.numero %}, {{ pedido.numero }}{% endif %}
+                                {% if pedido.complemento %} - {{ pedido.complemento }}{% endif %}<br>
+                                {% if pedido.bairro %}{{ pedido.bairro }}, {% endif %}{{ pedido.municipio }}
+                                - {{ pedido.uf }}
+                            </p>
+                            <p class="font-semibold">CEP {{ pedido.cep }}</p>
+                        </div>
+                    {% endif %}
+                {% endpartialdef %}
+            </form>
+        {% endpartialdef %}
+    </div>
+{% endblock %}

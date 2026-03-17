@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}django-edne-cep{% endblock %}</title>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amz: {
+                            orange: '#ff9900',
+                            'orange-hover': '#e68a00',
+                            yellow: '#febd69',
+                            dark: '#131921',
+                            'dark-light': '#232f3e',
+                            'dark-lighter': '#37475a',
+                            link: '#007185',
+                            'link-hover': '#c7511f',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    fontSize: {
+                        'xs': ['0.8125rem', {lineHeight: '1.125rem'}],
+                        'sm': ['0.9375rem', {lineHeight: '1.375rem'}],
+                        'base': ['1.125rem', {lineHeight: '1.75rem'}],
+                        'lg': ['1.25rem', {lineHeight: '1.875rem'}],
+                        'xl': ['1.40625rem', {lineHeight: '2rem'}],
+                        '2xl': ['1.6875rem', {lineHeight: '2.25rem'}],
+                        '3xl': ['2.109375rem', {lineHeight: '2.5rem'}],
+                        '4xl': ['2.53125rem', {lineHeight: '2.75rem'}],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .htmx-indicator {
+            display: none;
+        }
+
+        .htmx-indicator.htmx-request {
+            display: inline-flex;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-[#f5f1eb] text-[#0f1111] min-h-screen font-sans" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+<div class="max-w-[440px] mx-auto px-4 py-10">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>
