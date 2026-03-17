@@ -1,5 +1,3 @@
-import typing as t
-
 from django import forms
 from django.core.exceptions import ValidationError
 
@@ -14,8 +12,8 @@ class CepFormField(forms.CharField):
     }
 
     def __init__(self, **kwargs):
-        # kwargs.setdefault("max_length", 9)
-        # kwargs.setdefault("min_length", 8)
+        kwargs.setdefault("max_length", 9)  # "00000-000" = 9 chars
+        kwargs.setdefault("min_length", 8)  # "00000000" = 8 chars
         kwargs.setdefault(
             "widget",
             forms.TextInput(
