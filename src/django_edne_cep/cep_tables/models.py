@@ -56,6 +56,8 @@ class Localidade(models.Model):
 
     class Meta:
         managed = False
+        # app_label intentionally uses the main app name so all CEP models
+        # are grouped under a single section in Django admin
         app_label = "django_edne_cep"
         db_table = get_table_name("log_localidade")
 
@@ -81,6 +83,8 @@ class Bairro(models.Model):
 
     class Meta:
         managed = False
+        # app_label intentionally uses the main app name so all CEP models
+        # are grouped under a single section in Django admin
         app_label = "django_edne_cep"
         db_table = get_table_name("log_bairro")
 
@@ -105,6 +109,8 @@ class CaixaPostalComunitaria(models.Model):
 
     class Meta:
         managed = False
+        # app_label intentionally uses the main app name so all CEP models
+        # are grouped under a single section in Django admin
         app_label = "django_edne_cep"
         db_table = get_table_name("log_cpc")
 
@@ -157,6 +163,8 @@ class Logradouro(models.Model):
 
     class Meta:
         managed = False
+        # app_label intentionally uses the main app name so all CEP models
+        # are grouped under a single section in Django admin
         app_label = "django_edne_cep"
         db_table = get_table_name("log_logradouro")
 
@@ -198,6 +206,8 @@ class GrandeUsuario(models.Model):
 
     class Meta:
         managed = False
+        # app_label intentionally uses the main app name so all CEP models
+        # are grouped under a single section in Django admin
         app_label = "django_edne_cep"
         db_table = get_table_name("log_grande_usuario")
 
@@ -249,6 +259,8 @@ class UnidadeOperacional(models.Model):
 
     class Meta:
         managed = False
+        # app_label intentionally uses the main app name so all CEP models
+        # are grouped under a single section in Django admin
         app_label = "django_edne_cep"
         db_table = get_table_name("log_unid_oper")
 
