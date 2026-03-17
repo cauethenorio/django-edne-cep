@@ -29,4 +29,20 @@ class Cep(models.Model):
         verbose_name_plural = "CEPs"
 
     def __str__(self) -> str:
+        return self.cep_formatado
+
+    @property
+    def cep_formatado(self) -> str:
         return f"{self.cep[:5]}-{self.cep[5:]}"
+
+    def as_dict(self) -> dict[str, str | int | None]:
+        return {
+            "cep": self.cep_formatado,
+            "logradouro": self.logradouro,
+            "complemento": self.complemento,
+            "bairro": self.bairro,
+            "municipio": self.municipio,
+            "municipio_cod_ibge": self.municipio_cod_ibge,
+            "uf": self.uf,
+            "nome": self.nome,
+        }

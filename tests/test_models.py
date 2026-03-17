@@ -28,3 +28,45 @@ def test_cep_model_fields():
 def test_cep_str():
     cep = Cep(cep="01001000", municipio="São Paulo", uf="SP")
     assert str(cep) == "01001-000"
+
+
+def test_cep_formatado():
+    cep = Cep(cep="01001000")
+    assert cep.cep_formatado == "01001-000"
+
+
+def test_as_dict_full():
+    cep = Cep(
+        cep="01001000",
+        logradouro="Praça da Sé",
+        complemento="lado ímpar",
+        bairro="Sé",
+        municipio="São Paulo",
+        municipio_cod_ibge=3550308,
+        uf="SP",
+        nome="",
+    )
+    assert cep.as_dict() == {
+        "cep": "01001-000",
+        "logradouro": "Praça da Sé",
+        "complemento": "lado ímpar",
+        "bairro": "Sé",
+        "municipio": "São Paulo",
+        "municipio_cod_ibge": 3550308,
+        "uf": "SP",
+        "nome": "",
+    }
+
+
+def test_as_dict_nullable_fields():
+    cep = Cep(
+        cep="18170000",
+        municipio="Piedade",
+        municipio_cod_ibge=3537800,
+        uf="SP",
+    )
+    result = cep.as_dict()
+    assert result["cep"] == "18170-000"
+    assert result["logradouro"] is None
+    assert result["bairro"] is None
+    assert result["municipio"] == "Piedade"

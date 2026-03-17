@@ -1,5 +1,6 @@
 import pytest
 from django.core.cache import caches
+from django.core.exceptions import ValidationError
 from django.test import override_settings
 
 from django_edne_cep.models import Cep
@@ -158,6 +159,22 @@ def test_lookup_cep_returns_instance_from_db():
     assert isinstance(result, Cep)
     assert result.cep == "01001000"
     assert result.municipio == "São Paulo"
+
+
+@pytest.mark.parametrize(
+    "invalid_cep",
+    [
+        "abc",
+        "1234567",
+        "123456789",
+        "0100100a",
+        "",
+        "abcdefgh",
+    ],
+)
+def test_lookup_cep_raises_on_invalid_format(invalid_cep):
+    with pytest.raises(ValidationError):
+        lookup_cep(invalid_cep)
 
 
 def test_lookup_cep_importable_via_package():
