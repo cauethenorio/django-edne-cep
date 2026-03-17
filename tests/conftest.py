@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS edne_cep (
 
 
 @pytest.fixture(scope="session")
-def _cep_table(django_db_setup, django_db_blocker):  # noqa: ARG001
+def _cep_table(django_db_setup, django_db_blocker):
     """Create the edne_cep table for tests that query the Cep model directly."""
     with django_db_blocker.unblock():
         with connection.cursor() as cursor:

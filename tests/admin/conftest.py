@@ -122,7 +122,7 @@ def _admin_settings(settings):
 
 
 @pytest.fixture(scope="session")
-def _all_tables(django_db_setup, django_db_blocker):  # noqa: ARG001
+def _all_tables(django_db_setup, django_db_blocker):
     """Create all unmanaged model tables for admin view tests."""
     with django_db_blocker.unblock():
         with connection.cursor() as cursor:
