@@ -14,4 +14,6 @@ jobs:
           enable-cache: true
       - run: make test-cov
       - run: make cov-xml
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
