@@ -2,6 +2,7 @@ from django.core.cache import caches
 
 from .models import Cep
 from .settings import get_setting
+from .validators import validate_cep_format
 
 # sentinel to distinguish a cache miss from a cached None result
 _CACHE_MISS = object()
@@ -11,6 +12,7 @@ _CACHE_KEY_FORMAT = "edne:cep:{}"
 
 def lookup_cep(cep_str: str) -> Cep | None:
     cleaned_cep = cep_str.replace("-", "").strip()
+    validate_cep_format(cleaned_cep)
 
     timeout = get_setting("CACHE_TIMEOUT")
     cache = caches[get_setting("CACHE_ALIAS")]
