@@ -55,58 +55,58 @@ dev = [
 target-version = "py310"
 line-length = 88
 src = ["src", "tests"]
-exclude = ["example"]
+exclude = []
 
 [tool.ruff.lint]
 select = [
     # PyDevTools recommended defaults
     # https://pydevtools.com/handbook/how-to/how-to-configure-recommended-ruff-defaults/
-    "E",        # pycodestyle errors
-    "W",        # pycodestyle warnings
-    "F",        # pyflakes
-    "I",        # isort
-    "UP",       # pyupgrade
-    "C4",       # flake8-comprehensions
-    "FA",       # flake8-future-annotations
-    "ISC",      # flake8-implicit-str-concat
-    "ICN",      # flake8-import-conventions
-    "RET",      # flake8-return
-    "SIM",      # flake8-simplify
-    "TID",      # flake8-tidy-imports
-    "TC",       # flake8-type-checking
-    "PTH",      # flake8-use-pathlib
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    "UP", # pyupgrade
+    "C4", # flake8-comprehensions
+    "FA", # flake8-future-annotations
+    "ISC", # flake8-implicit-str-concat
+    "ICN", # flake8-import-conventions
+    "RET", # flake8-return
+    "SIM", # flake8-simplify
+    "TID", # flake8-tidy-imports
+    "TC", # flake8-type-checking
+    "PTH", # flake8-use-pathlib
 
     # Additional from edne-correios-loader
-    "A",        # flake8-builtins
-    "ARG",      # flake8-unused-arguments
-    "B",        # flake8-bugbear
-    "DTZ",      # flake8-datetimez
-    "EM",       # flake8-errmsg
-    "G",        # flake8-logging-format
-    "N",        # pep8-naming
-    "PIE",      # flake8-pie
-    "PLC",      # pylint convention
-    "PLE",      # pylint error
-    "PLR",      # pylint refactor
-    "PLW",      # pylint warning
-    "Q",        # flake8-quotes
-    "RUF",      # ruff-specific
-    "S",        # flake8-bandit (security)
-    "T10",      # flake8-debugger
-    "T20",      # flake8-print
-    "TRY",      # tryceratops
-    "YTT",      # flake8-2020
+    "A", # flake8-builtins
+    "ARG", # flake8-unused-arguments
+    "B", # flake8-bugbear
+    "DTZ", # flake8-datetimez
+    "EM", # flake8-errmsg
+    "G", # flake8-logging-format
+    "N", # pep8-naming
+    "PIE", # flake8-pie
+    "PLC", # pylint convention
+    "PLE", # pylint error
+    "PLR", # pylint refactor
+    "PLW", # pylint warning
+    "Q", # flake8-quotes
+    "RUF", # ruff-specific
+    "S", # flake8-bandit (security)
+    "T10", # flake8-debugger
+    "T20", # flake8-print
+    "TRY", # tryceratops
+    "YTT", # flake8-2020
 
     # Django-specific
-    "DJ",       # flake8-django
+    "DJ", # flake8-django
 ]
 ignore = [
-    "B027",                                         # empty methods in ABCs
-    "E401",                                         # multi-line imports
-    "S105", "S106", "S107",                         # possible passwords
-    "SIM117",                                       # nested context managers
-    "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0915",  # complexity
-    "ISC001",                                       # conflicts with ruff format
+    "B027", # empty methods in ABCs
+    "E401", # multi-line imports
+    "S105", "S106", "S107", # possible passwords
+    "SIM117", # nested context managers
+    "C901", "PLR0911", "PLR0912", "PLR0913", "PLR0915", # complexity
+    "ISC001", # conflicts with ruff format
 ]
 unfixable = ["F401", "F841", "ARG001"]
 
