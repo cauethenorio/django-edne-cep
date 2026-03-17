@@ -143,3 +143,15 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "if TYPE_CHECKING:",
 ]
+
+[tool.uv.build-backend]
+source-exclude = [
+    "tests/**",
+    "example/**",
+    "docs/**",
+    "htmlcov/**",
+    "Makefile",
+    ".github/**",
+    ".planning/**",
+    ".playwright-cli/**",
+]
