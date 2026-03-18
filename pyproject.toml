@@ -117,6 +117,8 @@ known-first-party = ["django_edne_cep"]
 "src/django_edne_cep/checks.py" = ["ARG001"]
 "src/django_edne_cep/admin.py" = ["ARG002"]
 "src/django_edne_cep/cep_tables/admin.py" = ["ARG002"]
+"example/manage.py" = ["PLC0415"]
+"example/**/*" = ["ARG001", "ARG002"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
