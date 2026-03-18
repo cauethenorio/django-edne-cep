@@ -57,7 +57,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "django", specifier = ">=4.1" },
+    { name = "django", specifier = ">=4.2" },
     { name = "edne-correios-loader", specifier = ">=1.2.0" },
 ]
 

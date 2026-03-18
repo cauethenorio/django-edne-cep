@@ -11,7 +11,7 @@ Utiliza o [edne-correios-loader](https://github.com/cauethenorio/edne-correios-l
 os dados eDNE dos Correios, eliminando dependência de APIs externas.
 
 - Consultas em banco de dados local, sem chamadas a APIs externas, sem latência de rede
-- Cache com proteção contra stampede (baseado em sentinel, armazena resultados não encontrados também)
+- Usa Cache do Django para agilizar consultas a CEPs populares
 - Campo de formulário com validação de formato de CEP e preenchimento automático de endereço
 - Integração com o admin do Django (opcional)
 - Nomes de tabelas, alias de banco de dados e backend de cache configuráveis

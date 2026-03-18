@@ -7,9 +7,11 @@ class PedidoForm(forms.Form):
     nome = forms.CharField(
         max_length=100,
         widget=forms.TextInput(attrs={"autocomplete": "name"}),
+        initial="Fulano",
     )
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={"autocomplete": "email", "inputmode": "email"}),
+        initial="fulano@example.com",
     )
 
     cep = CepFormField()
