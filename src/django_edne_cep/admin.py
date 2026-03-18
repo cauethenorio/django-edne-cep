@@ -3,7 +3,7 @@ import re
 
 from django.contrib import admin
 from django.contrib.admin import AdminSite
-from django.contrib.admin.exceptions import AlreadyRegistered
+from django.contrib.admin.sites import AlreadyRegistered
 from django.db import models
 from django.http import HttpRequest
 from django.urls import reverse
