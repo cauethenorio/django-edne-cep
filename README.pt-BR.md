@@ -7,22 +7,21 @@
 [![Coverage](https://codecov.io/gh/cauethenorio/django-edne-cep/graph/badge.svg)](https://codecov.io/gh/cauethenorio/django-edne-cep)
 
 Habilita consulta de CEP em seu app Django com banco de dados local.
-Utiliza o [edne-correios-loader](https://github.com/cauethenorio/edne-correios-loader) para popular o banco de dados com
-os dados eDNE dos Correios, eliminando dependência de APIs externas.
 
+Utiliza o [edne-correios-loader](https://github.com/cauethenorio/edne-correios-loader) para popular o banco de dados com
+os dados de CEP do eDNE dos Correios, eliminando dependência de APIs externas.
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cauethenorio/django-edne-cep/main/docs/images/cep-lookup.gif" />
+    <p>Consulta de CEP com HTMX no app de exemplo</p>
+</div>
+
+- Um comando de gerenciamento para baixar e carregar todos os 1,5M de CEPs no seu banco de dados
 - Consultas em banco de dados local, sem chamadas a APIs externas, sem latência de rede
-- Usa Cache do Django para agilizar consultas a CEPs populares
+- Utiliza o cache do Django para agilizar consultas repetidas
 - Campo de formulário com validação de formato de CEP e preenchimento automático de endereço
 - Integração com o admin do Django (opcional)
 - Nomes de tabelas, alias de banco de dados e backend de cache configuráveis
-
-![Demo de Consulta de CEP](https://raw.githubusercontent.com/cauethenorio/django-edne-cep/main/docs/images/cep-lookup.gif)
-
-*Consulta de CEP com HTMX no app de exemplo*
-
-![Integração com Admin](https://raw.githubusercontent.com/cauethenorio/django-edne-cep/main/docs/images/admin.png)
-
-*Admin do Django exibindo dados de CEP*
 
 ## Início Rápido
 
@@ -44,11 +43,10 @@ INSTALLED_APPS = [
 **Passo 3: Carregar os dados de CEP**
 
 ```bash
-python manage.py load_edne_cep --auto-download
+python manage.py load_edne_cep
 ```
 
-Isso faz o download do dataset eDNE dos Correios (~350 MB) e popula o banco de dados local. Execuções subsequentes
-reutilizam o arquivo em cache.
+Isso faz o download do dataset eDNE dos Correios (~350 MB) e popula o banco de dados local com todos os CEPs brasileiros.
 
 **Usar:**
 
@@ -57,8 +55,8 @@ from django_edne_cep import lookup_cep
 
 cep = lookup_cep("01310-100")
 if cep:
-    print(f"{cep.logradouro}, {cep.municipio}/{cep.uf}")
-    # "Avenida Paulista, São Paulo/SP"
+    print(f"{cep.logradouro}, {cep.municipio} - {cep.uf}")
+    # "Avenida Paulista, São Paulo - SP"
 ```
 
 ## Referência da API
@@ -147,26 +145,6 @@ Use diretamente em qualquer `CharField` ou `Field` que deva aceitar valores de C
 dados.
 
 ---
-
-### `register_admin(site: AdminSite | None = None) -> None`
-
-Registra o modelo `Cep` com um `CepAdmin` somente leitura no site de admin fornecido. O caso de uso padrão não requer
-chamada manual. Defina `EDNE_CEP["ADMIN_ENABLED"] = True` nas configurações do Django.
-
-`register_admin()` é chamado automaticamente quando `django_edne_cep.admin` é importado com `ADMIN_ENABLED=True`. A
-chamada explícita só é necessária para um `AdminSite` personalizado.
-
-```python
-# Uso padrão, definir nas configurações do Django:
-EDNE_CEP = {
-    "ADMIN_ENABLED": True,
-}
-
-# Somente para uso com AdminSite personalizado:
-from django_edne_cep import register_admin
-
-register_admin(site=my_custom_site)
-```
 
 ## Configuração
 
