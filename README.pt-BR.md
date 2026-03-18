@@ -6,9 +6,11 @@
 [![CI](https://github.com/cauethenorio/django-edne-cep/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/cauethenorio/django-edne-cep/actions/workflows/lint-and-test.yml)
 [![Coverage](https://codecov.io/gh/cauethenorio/django-edne-cep/graph/badge.svg)](https://codecov.io/gh/cauethenorio/django-edne-cep)
 
-App Django para consulta de CEP com banco de dados local. Utiliza o [edne-correios-loader](https://github.com/cauethenorio/edne-correios-loader) para popular o banco de dados com os dados eDNE dos Correios, eliminando qualquer dependência de APIs externas.
+Habilita consulta de CEP em seu app Django com banco de dados local.
+Utiliza o [edne-correios-loader](https://github.com/cauethenorio/edne-correios-loader) para popular o banco de dados com
+os dados eDNE dos Correios, eliminando dependência de APIs externas.
 
-- Consultas em banco de dados local — sem chamadas a APIs externas, sem latência de rede
+- Consultas em banco de dados local, sem chamadas a APIs externas, sem latência de rede
 - Cache com proteção contra stampede (baseado em sentinel, armazena resultados não encontrados também)
 - Campo de formulário com validação de formato de CEP e preenchimento automático de endereço
 - Integração com o admin do Django (opcional)
@@ -24,13 +26,13 @@ App Django para consulta de CEP com banco de dados local. Utiliza o [edne-correi
 
 ## Início Rápido
 
-**Passo 1 — Instalar:**
+**Passo 1: Instalar**
 
 ```bash
 pip install django-edne-cep
 ```
 
-**Passo 2 — Adicionar ao `INSTALLED_APPS`:**
+**Passo 2: Adicionar ao `INSTALLED_APPS`**
 
 ```python
 INSTALLED_APPS = [
@@ -39,13 +41,14 @@ INSTALLED_APPS = [
 ]
 ```
 
-**Passo 3 — Carregar os dados de CEP:**
+**Passo 3: Carregar os dados de CEP**
 
 ```bash
 python manage.py load_edne_cep --auto-download
 ```
 
-Isso faz o download do dataset eDNE dos Correios (~350 MB) e popula o banco de dados local. Execuções subsequentes reutilizam o arquivo em cache.
+Isso faz o download do dataset eDNE dos Correios (~350 MB) e popula o banco de dados local. Execuções subsequentes
+reutilizam o arquivo em cache.
 
 **Usar:**
 
@@ -72,12 +75,12 @@ Consulta um CEP no banco de dados local. Aceita os formatos `"01310-100"` e `"01
 from django_edne_cep import lookup_cep
 from django.core.exceptions import ValidationError
 
-cep = lookup_cep("01310-100")   # aceita "01310-100" ou "01310100"
+cep = lookup_cep("01310-100")  # aceita "01310-100" ou "01310100"
 if cep:
     print(f"{cep.logradouro}, {cep.municipio}/{cep.uf}")
 
 try:
-    lookup_cep("ABC")           # lança ValidationError para entrada malformada
+    lookup_cep("ABC")  # lança ValidationError para entrada malformada
 except ValidationError:
     pass
 ```
@@ -85,16 +88,16 @@ except ValidationError:
 A instância `Cep` retornada possui os seguintes campos:
 
 ```python
-cep.cep                # "01310100"  (8 dígitos, sem hífen)
-cep.cep_formatado      # "01310-100" (property)
-cep.logradouro         # str | None
-cep.complemento        # str | None
-cep.bairro             # str | None
-cep.municipio          # str
-cep.municipio_cod_ibge # int
-cep.uf                 # str (2 caracteres, ex: "SP")
-cep.nome               # str | None
-cep.as_dict()          # dict com todos os campos acima
+cep.cep  # "01310100"  (8 dígitos, sem hífen)
+cep.cep_formatado  # "01310-100" (property)
+cep.logradouro  # str | None
+cep.complemento  # str | None
+cep.bairro  # str | None
+cep.municipio  # str
+cep.municipio_cod_ibge  # int
+cep.uf  # str (2 caracteres, ex: "SP")
+cep.nome  # str | None
+cep.as_dict()  # dict com todos os campos acima
 ```
 
 ---
@@ -111,10 +114,12 @@ Uma subclasse de `CharField` que valida o formato do CEP e retorna uma instânci
 from django import forms
 from django_edne_cep import CepFormField
 
+
 class EnderecoForm(forms.Form):
     cep = CepFormField()
     logradouro = forms.CharField(required=False)
     municipio = forms.CharField(required=False)
+
 
 # Em uma view:
 form = EnderecoForm(request.POST)
@@ -127,34 +132,39 @@ if form.is_valid():
 
 ### `validate_cep_format`
 
-Um `RegexValidator` do Django que aceita os formatos `"00000000"` e `"00000-000"`. Lança `ValidationError` com o código `"invalid_cep_format"` em caso de falha.
+Um `RegexValidator` do Django que aceita os formatos `"00000000"` e `"00000-000"`. Lança `ValidationError` com o código
+`"invalid_cep_format"` em caso de falha.
 
 ```python
 from django_edne_cep import validate_cep_format
 
-validate_cep_format("01310-100")   # passa silenciosamente
-validate_cep_format("01310100")    # passa silenciosamente
-validate_cep_format("ABC")         # lança ValidationError
+validate_cep_format("01310-100")  # passa silenciosamente
+validate_cep_format("01310100")  # passa silenciosamente
+validate_cep_format("ABC")  # lança ValidationError
 ```
 
-Use diretamente em qualquer `CharField` ou `Field` que deva aceitar valores de CEP sem acionar uma consulta ao banco de dados.
+Use diretamente em qualquer `CharField` ou `Field` que deva aceitar valores de CEP sem acionar uma consulta ao banco de
+dados.
 
 ---
 
 ### `register_admin(site: AdminSite | None = None) -> None`
 
-Registra o modelo `Cep` com um `CepAdmin` somente leitura no site de admin fornecido. O caso de uso padrão não requer chamada manual — defina `EDNE_CEP["ADMIN_ENABLED"] = True` nas configurações do Django.
+Registra o modelo `Cep` com um `CepAdmin` somente leitura no site de admin fornecido. O caso de uso padrão não requer
+chamada manual. Defina `EDNE_CEP["ADMIN_ENABLED"] = True` nas configurações do Django.
 
-`register_admin()` é chamado automaticamente quando `django_edne_cep.admin` é importado com `ADMIN_ENABLED=True`. A chamada explícita só é necessária para um `AdminSite` personalizado.
+`register_admin()` é chamado automaticamente quando `django_edne_cep.admin` é importado com `ADMIN_ENABLED=True`. A
+chamada explícita só é necessária para um `AdminSite` personalizado.
 
 ```python
-# Uso padrão — definir nas configurações do Django:
+# Uso padrão, definir nas configurações do Django:
 EDNE_CEP = {
     "ADMIN_ENABLED": True,
 }
 
 # Somente para uso com AdminSite personalizado:
 from django_edne_cep import register_admin
+
 register_admin(site=my_custom_site)
 ```
 
@@ -169,16 +179,16 @@ EDNE_CEP = {
 }
 ```
 
-| Configuração | Tipo | Padrão | Descrição |
-|---------|------|---------|-------------|
-| `TABLE_NAMES` | `dict` | veja abaixo | Sobrescreve nomes individuais de tabelas eDNE |
-| `TABLE_SET` | `str \| None` | `None` | Carrega apenas um subconjunto de tabelas (ex: `"cep"`) |
-| `EDNE_SOURCE` | `str \| None` | `None` | Caminho ou URL para o arquivo zip eDNE; `None` solicita download |
-| `DATABASE_ALIAS` | `str` | `"default"` | Alias de banco de dados do Django para as tabelas de CEP |
-| `DATABASE_URL` | `str \| None` | `None` | URL direta de banco de dados (substitui `DATABASE_ALIAS`) |
-| `CACHE_TIMEOUT` | `int` | `3600` | TTL do cache em segundos; `0` desativa o cache |
-| `CACHE_ALIAS` | `str` | `"default"` | Alias de cache do Django para consultas de CEP |
-| `ADMIN_ENABLED` | `bool` | `False` | Registra os modelos de CEP no admin do Django |
+| Configuração     | Tipo          | Padrão      | Descrição                                                        |
+|------------------|---------------|-------------|------------------------------------------------------------------|
+| `TABLE_NAMES`    | `dict`        | veja abaixo | Sobrescreve nomes individuais de tabelas eDNE                    |
+| `TABLE_SET`      | `str \| None` | `None`      | Carrega apenas um subconjunto de tabelas (ex: `"cep"`)           |
+| `EDNE_SOURCE`    | `str \| None` | `None`      | Caminho ou URL para o arquivo zip eDNE; `None` solicita download |
+| `DATABASE_ALIAS` | `str`         | `"default"` | Alias de banco de dados do Django para as tabelas de CEP         |
+| `DATABASE_URL`   | `str \| None` | `None`      | URL direta de banco de dados (substitui `DATABASE_ALIAS`)        |
+| `CACHE_TIMEOUT`  | `int`         | `3600`      | TTL do cache em segundos; `0` desativa o cache                   |
+| `CACHE_ALIAS`    | `str`         | `"default"` | Alias de cache do Django para consultas de CEP                   |
+| `ADMIN_ENABLED`  | `bool`        | `False`     | Registra os modelos de CEP no admin do Django                    |
 
 **`TABLE_NAMES` padrão:**
 
@@ -207,15 +217,18 @@ EDNE_CEP = {
 }
 ```
 
-O `CepAdmin` é registrado automaticamente quando `django_edne_cep.admin` é importado. Suporta busca por texto completo por CEP, nome do logradouro, bairro e município, além de filtros por estado (UF) e presença de campo.
+O `CepAdmin` é registrado automaticamente quando `django_edne_cep.admin` é importado. Suporta busca por texto completo
+por CEP, nome do logradouro, bairro e município, além de filtros por estado (UF) e presença de campo.
 
-Para um `AdminSite` personalizado, chame `register_admin(site=my_site)` explicitamente após definir `ADMIN_ENABLED = True`.
+Para um `AdminSite` personalizado, chame `register_admin(site=my_site)` explicitamente após definir
+`ADMIN_ENABLED = True`.
 
 ![Integração com Admin](https://raw.githubusercontent.com/cauethenorio/django-edne-cep/main/docs/images/admin.png)
 
 ## App de Exemplo
 
-O diretório `example/` contém um projeto Django independente com um formulário de preenchimento automático de CEP com HTMX: digite um CEP e os campos de endereço são preenchidos automaticamente sem recarregar a página.
+O diretório `example/` contém um projeto Django independente com um formulário de preenchimento automático de CEP com
+HTMX: digite um CEP e os campos de endereço são preenchidos automaticamente sem recarregar a página.
 
 Veja [example/README.md](example/README.md) para instruções completas sobre como executar localmente.
 

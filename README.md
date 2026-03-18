@@ -6,9 +6,11 @@
 [![CI](https://github.com/cauethenorio/django-edne-cep/actions/workflows/lint-and-test.yml/badge.svg)](https://github.com/cauethenorio/django-edne-cep/actions/workflows/lint-and-test.yml)
 [![Coverage](https://codecov.io/gh/cauethenorio/django-edne-cep/graph/badge.svg)](https://codecov.io/gh/cauethenorio/django-edne-cep)
 
-Django app for CEP (Código de Endereçamento Postal — Brazilian postal code) lookups backed by a local database. It uses [edne-correios-loader](https://github.com/cauethenorio/edne-correios-loader) to populate the database from Correios eDNE data, eliminating any dependency on external APIs.
+Enables CEP (Código de Endereçamento Postal, Brazilian postal code) lookups in your Django app backed by a local database.
+Uses [edne-correios-loader](https://github.com/cauethenorio/edne-correios-loader) to populate the database from
+Correios eDNE data, eliminating any dependency on external APIs.
 
-- Local database lookups — no external API calls, no network latency
+- Local database lookups, no external API calls, no network latency
 - Cache with stampede protection (sentinel-based, caches not-found results too)
 - Form field with CEP format validation and automatic address lookup
 - Django admin integration (opt-in)
@@ -24,13 +26,13 @@ Django app for CEP (Código de Endereçamento Postal — Brazilian postal code) 
 
 ## Quick Start
 
-**Step 1 — Install:**
+**Step 1: Install**
 
 ```bash
 pip install django-edne-cep
 ```
 
-**Step 2 — Add to `INSTALLED_APPS`:**
+**Step 2: Add to `INSTALLED_APPS`**
 
 ```python
 INSTALLED_APPS = [
@@ -39,7 +41,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-**Step 3 — Load CEP data:**
+**Step 3: Load CEP data**
 
 ```bash
 python manage.py load_edne_cep --auto-download
@@ -143,12 +145,12 @@ Use it directly on any `CharField` or `Field` that should accept CEP values with
 
 ### `register_admin(site: AdminSite | None = None) -> None`
 
-Registers the `Cep` model with a read-only `CepAdmin` in the given admin site. The standard use case requires no manual call — set `EDNE_CEP["ADMIN_ENABLED"] = True` in Django settings instead.
+Registers the `Cep` model with a read-only `CepAdmin` in the given admin site. The standard use case requires no manual call. Set `EDNE_CEP["ADMIN_ENABLED"] = True` in Django settings instead.
 
 `register_admin()` is called automatically when `django_edne_cep.admin` is imported with `ADMIN_ENABLED=True`. The explicit call is only needed for a custom `AdminSite`.
 
 ```python
-# Standard usage — set in Django settings:
+# Standard usage, set in Django settings:
 EDNE_CEP = {
     "ADMIN_ENABLED": True,
 }
